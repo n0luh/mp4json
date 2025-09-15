@@ -16,42 +16,7 @@
     <button id="pause">Pause</button>
   </div>
 
-<script>
-const url = '/video.json'; // coloque video.json na raiz do repo
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-let frames = [], fps = 20, timer = null, idx = 0;
-
-async function load() {
-  const res = await fetch(url);
-  const json = await res.json();
-  frames = json.frames || [];
-  fps = json.fps || 20;
-  canvas.width = json.width || 640;
-  canvas.height = json.height || 360;
-}
-
-function drawFrame(i) {
-  const b64 = frames[i];
-  const img = new Image();
-  img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  img.src = b64.startsWith('data:') ? b64 : 'data:image/png;base64,' + b64;
-}
-
-function play() {
-  if (timer) return;
-  timer = setInterval(() => {
-    if (idx >= frames.length) { clearInterval(timer); timer = null; return; }
-    drawFrame(idx++);
-  }, 1000 / fps);
-}
-
-function pause() { if (timer) { clearInterval(timer); timer = null; } }
-
-document.getElementById('play').onclick = play;
-document.getElementById('pause').onclick = pause;
-
-load();
-</script>
+  <!-- importa o script separado -->
+  <script src="player.js"></script>
 </body>
 </html>
